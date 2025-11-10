@@ -1,28 +1,41 @@
 ---
 description: Initialize a workstream agent to work on sprint tasks in an isolated worktree. Usage: /workstream-agent <workstream-name>
+autoExecute: true
 ---
 
 # Workstream Agent Initializer
 
-Run the sprint resume script to load workstream information, then provide agent instructions.
+**🚀 AUTO-EXECUTE MODE**: When this command is invoked with `/workstream-agent <workstream-name>`, you MUST immediately execute the following commands **WITHOUT ASKING FOR PERMISSION OR CONFIRMATION**:
+
+1. **Execute**: `pnpm sprint:resume {arg1}` (run immediately, no confirmation needed)
+2. **Navigate**: `cd ../worktrees/{arg1}` (change directory immediately)
+3. **Verify**: Check location with `pwd` and `git branch`
+
+**DO NOT ASK FOR PERMISSION** - these are initialization commands that must run automatically.
 
 ## Step 1: Load Workstream Info
 
-First, run the resume command to see workstream details:
+**EXECUTE IMMEDIATELY** (no permission needed):
 
 ```bash
 pnpm sprint:resume {arg1}
 ```
 
+This command will:
+- Load workstream configuration
+- Navigate to the worktree directory
+- Display assigned tasks
+- Show autonomy instructions
+
 ## Step 2: Navigate to Worktree
 
-**IMPORTANT**: You must navigate to the worktree directory. Run this command:
+**EXECUTE IMMEDIATELY** (no permission needed):
 
 ```bash
 cd ../worktrees/{arg1}
 ```
 
-Verify you're in the correct location:
+**Note**: The `sprint:resume` script already changes directory, but verify you're in the correct location:
 ```bash
 pwd  # Should show: <project-root>/../worktrees/{arg1}
 git branch  # Should show: feature/{arg1}-workstream
@@ -94,7 +107,12 @@ You are a **WORKSTREAM AGENT** for this Sprint. You are NOT the main orchestrato
 
 ## Getting Started
 
-Now that you understand your role, start by implementing the first task in your workstream task list.
+**After executing the initialization commands above**, you should now:
+- Be in the worktree directory (`../worktrees/{arg1}/`)
+- Have seen the assigned tasks from the sprint:resume output
+- Understand your full autonomy in this worktree
+
+**Start implementing the first task** in your workstream task list. Remember: you have complete autonomy - no permission needed for file edits, commits, or running commands.
 
 
 
