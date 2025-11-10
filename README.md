@@ -1,35 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Test Parallel Workflows
 
-## Getting Started
+This is a **testing and demonstration project** for parallel development workflows using Next.js 16, React 19, and TypeScript.
 
-First, run the development server:
+## 🎯 Project Purpose
+
+This project is designed to **test and demonstrate** a sprint workstream orchestration system that enables:
+- **Parallel development** across multiple workstreams (frontend, backend, testing)
+- **Git worktree management** for isolated development branches
+- **Sequential integration** workflow with quality gates
+- **Automated sprint orchestration** via CLI scripts
+
+**Note**: This is a **testing/demo project**. The features implemented are intentionally simple to focus on demonstrating the workflow system rather than complex business logic.
+
+## 🏗️ Architecture
+
+- **Framework**: Next.js 16 (App Router) + React 19 + TypeScript
+- **Styling**: Tailwind CSS
+- **Testing**: Vitest (unit tests) + Playwright (E2E tests)
+- **Workflow System**: Custom sprint orchestration scripts
+
+## 🚀 Getting Started
+
+### Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Install dependencies
+pnpm install
+
+# Start development server
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Sprint Workflow Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Analyze sprint and create workstreams
+pnpm sprint:analyze .claude/backlog/sprint-1-hello-api.md
 
-## Learn More
+# Create worktrees for all workstreams
+pnpm sprint:create-workstreams .claude/backlog/sprint-1-hello-api.md
 
-To learn more about Next.js, take a look at the following resources:
+# Check sprint orchestration status
+pnpm sprint:orchestrate .claude/backlog/sprint-1-hello-api.md
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Check workstream status
+pnpm sprint:status
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Sync all workstreams with develop
+pnpm sprint:sync-all
 
-## Deploy on Vercel
+# Clean up worktrees and branches
+pnpm sprint:cleanup .claude/backlog/sprint-1-hello-api.md
+```
+
+### Quality Gates
+
+```bash
+# Run quality gates (in order)
+pnpm test run        # Unit tests (FAST)
+pnpm type-check      # TypeScript checking
+pnpm lint            # Linting
+pnpm build           # Production build (SLOW)
+```
+
+## 📋 Available Sprints
+
+- **[Sprint 1: Hello API (Simplified Demo)](.claude/backlog/sprint-1-hello-api.md)** - Fast demo sprint (~45 min, 3 story points)
+
+## 📚 Documentation
+
+- **[CLAUDE.md](./CLAUDE.md)** - Entry point for Claude Code with workflow commands
+- **[docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - System architecture details
+- **[docs/EVALUATION.md](./docs/EVALUATION.md)** - System evaluation and test results
+- **[docs/CLEANUP.md](./docs/CLEANUP.md)** - Environment cleanup procedures
+- **[.claude/workflow/](./.claude/workflow/)** - Detailed workflow documentation
+
+## 🧪 Testing
+
+This project includes comprehensive testing for the workflow system:
+
+- **Unit Tests**: Component and API route testing with Vitest
+- **E2E Tests**: Integration testing with Playwright
+- **System Evaluation**: Complete validation of orchestrator and workstream agent workflows
+
+See [docs/EVALUATION.md](./docs/EVALUATION.md) for complete test results.
+
+## 📝 Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial
+
+## 🚢 Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
