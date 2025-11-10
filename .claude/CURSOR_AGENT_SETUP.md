@@ -18,14 +18,17 @@ To enable workstream agents to work autonomously without permission prompts, con
 - **Use case**: Allows `pnpm sprint:resume` and file edits to run without prompts
 - **Note**: This is the main setting that controls automatic execution
 
-### 2. Protection Settings (Review)
+### 2. Protection Settings (Important for Worktrees!)
 - **Location**: `Cursor Settings` → `Agents` → `Auto-Run` section
 - **Settings to check**:
   - **File-Deletion Protection**: ON (prevents auto-deletion - keep ON for safety)
   - **Dotfile Protection**: ON (prevents modifying .gitignore, etc. - keep ON for safety)
-  - **External-File Protection**: ON (prevents modifying files outside workspace - keep ON for safety)
+  - **External-File Protection**: ⚠️ **CRITICAL FOR WORKTREES**
+    - **ON**: Blocks file edits in worktrees (they're outside workspace)
+    - **OFF**: Allows file edits in worktrees automatically
+    - **Recommendation**: Turn OFF if you want worktree edits to work automatically
   - **Browser Protection**: OFF (allows browser tools - adjust as needed)
-- **Note**: These protection settings should NOT block regular file edits within the workspace when "Run Everything" is enabled
+- **Note**: Since worktrees are in `../worktrees/` (sibling directory), Cursor treats them as "external" to the workspace
 
 ### 3. Configure Guardrails (Optional but Recommended)
 - **Setting**: `Guardrails` or "Safeguards"
@@ -65,36 +68,37 @@ Cursor Settings → Agents → Applying Changes:
 
 ## Troubleshooting
 
-### File Edits Still Prompting?
+### File Edits Still Prompting? (Worktree Issue)
 
-If "Run Everything (Unsandboxed)" is enabled but file edits still ask for permission:
+**Root Cause**: Worktrees are in a sibling directory (`../worktrees/`), which Cursor considers "outside the workspace". The **External-File Protection** setting blocks edits there.
 
-1. **Verify Auto-Run Mode Setting**:
-   - Go to `Cursor Settings` → `Agents` → `Auto-Run`
-   - Confirm `Auto-Run Mode` is set to **"Run Everything (Unsandboxed)"**
-   - If it's set to "Ask" or "Sandboxed", change it to "Run Everything"
+**Solutions** (choose one):
 
-2. **Check Protection Settings**:
-   - The protection toggles (File-Deletion, Dotfile, External-File) should NOT block regular file edits
-   - However, if you're editing dotfiles (like `.gitignore`), `Dotfile Protection` being ON will block it
-   - If editing files outside workspace, `External-File Protection` will block it
-   - **For worktree files**: These should work fine with "Run Everything" enabled
+#### Option 1: Disable External-File Protection (Quick Fix)
+- Go to `Cursor Settings` → `Agents` → `Auto-Run`
+- Turn OFF **External-File Protection**
+- **Pros**: Worktree file edits will work automatically
+- **Cons**: Less safe - allows edits outside workspace in general
+- **Recommendation**: Only if you trust the worktree workflow
 
-3. **Restart Agent Session**:
-   - Close the current Agent chat completely
-   - Start a new Agent session
-   - Settings changes require a new session to take effect
+#### Option 2: Add Worktrees to Workspace (Better Solution)
+- In Cursor: `File` → `Add Folder to Workspace...`
+- Add the `worktrees/` directory (or individual worktree folders)
+- **Pros**: Worktrees become part of workspace, External-File Protection won't block them
+- **Cons**: Slightly more complex setup
+- **Recommendation**: Best long-term solution
 
-4. **Check File Location**:
-   - Make sure you're editing files **within the workspace** (not outside)
-   - Worktree directories should be considered part of the workspace
-   - Files outside the workspace will be blocked by `External-File Protection`
+#### Option 3: Accept Prompts (Safest)
+- Keep **External-File Protection** ON
+- Approve file edits when prompted
+- **Pros**: Maximum security
+- **Cons**: Manual approval needed for each file edit
+- **Recommendation**: If security is priority
 
-5. **If Still Prompting**:
-   - This may be a Cursor bug or limitation
-   - Try restarting Cursor completely
-   - Check for Cursor updates: `Help` → `Check for Updates`
-   - As a workaround, approve file edits when prompted (AutoRun for terminal commands is working)
+**After applying a solution**:
+1. Restart Agent session (close and start new)
+2. Test file edit in worktree
+3. Should work without prompts (Option 1 or 2) or with prompts (Option 3)
 
 ## Notes
 
