@@ -48,6 +48,14 @@ const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 console.log('📊 SPRINT CONFIGURATION:');
 console.log(`   Sprint: ${config.sprint || 'Unknown'}`);
 console.log(`   Workstreams: ${config.workstreams?.length || 0}`);
+if (config.localCiMode) {
+  console.log(`   Mode: 🎭 Local CI Simulation`);
+  if (config.startingCommit) {
+    console.log(`   Starting commit: ${config.startingCommit.substring(0, 7)}`);
+  }
+} else {
+  console.log(`   Mode: 🌐 Standard (GitHub PR workflow)`);
+}
 console.log('');
 
 if (config.workstreams && config.workstreams.length > 0) {
