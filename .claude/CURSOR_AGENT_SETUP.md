@@ -15,11 +15,13 @@ To enable workstream agents to work autonomously without permission prompts, con
 - **Action**: Enable this toggle
 - **Use case**: Allows `pnpm sprint:resume` and other commands to run without prompts
 
-### 2. Enable AutoApplyEdits
-- **Setting**: `AutoApplyEdits` or "Automatically apply edits"
+### 2. Enable AutoApplyEdits ⚠️ CRITICAL
+- **Setting**: `AutoApplyEdits` or "Automatically apply edits" or "Auto-apply edits"
 - **Description**: Automatically applies edits without manual confirmation
-- **Action**: Enable this toggle
-- **Use case**: Allows file writes (like `package.json`) without permission prompts
+- **Action**: **Enable this toggle** (this is separate from AutoRun!)
+- **Location**: Same settings page as AutoRun, but it's a different toggle
+- **Use case**: Allows file writes (like `package.json`, source files, etc.) without permission prompts
+- **Note**: If file edits still prompt, double-check this setting is enabled
 
 ### 3. Configure Guardrails (Optional but Recommended)
 - **Setting**: `Guardrails` or "Safeguards"
@@ -50,8 +52,33 @@ Cursor Settings → Features → Agent → Tools:
 ✅ AutoFixErrors: ON (optional)
 ```
 
+## Troubleshooting
+
+### File Edits Still Prompting?
+
+If terminal commands work (AutoRun is working) but file edits still ask for permission:
+
+1. **Verify AutoApplyEdits is enabled**:
+   - Go back to Cursor Settings → Features → Agent → Tools
+   - Look for "AutoApplyEdits" or "Automatically apply edits"
+   - Make sure the toggle is **ON** (not just AutoRun)
+
+2. **Check Guardrails configuration**:
+   - If Guardrails are configured, make sure file write operations are allowed
+   - Or temporarily disable Guardrails to test if that's the issue
+
+3. **Restart Agent session**:
+   - Close the current Agent chat
+   - Start a new Agent session
+   - Settings changes may require a new session
+
+4. **Check for file-specific restrictions**:
+   - Some files (like `.env`, config files) might have additional protections
+   - Check if the file is in a protected directory
+
 ## Notes
 
+- **AutoRun and AutoApplyEdits are separate settings** - both must be enabled
 - These settings apply globally to all Agent sessions
 - Guardrails provide an extra security layer by allowing only specific commands
 - After enabling, restart Cursor or start a new Agent session
