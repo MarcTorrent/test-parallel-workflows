@@ -78,9 +78,12 @@ Example:
 - ✅ Run quality gates before each commit
 - ✅ Commit after each completed task
 - ✅ Run `pnpm sprint:complete <name>` when ALL tasks done
+- ✅ **FULL AUTONOMY** in your worktree - edit/create/delete files freely
+- ✅ **Create subagents** for parallel tasks within your workstream
 - ❌ DON'T push to GitHub (orchestrator does this)
 - ❌ DON'T merge branches
 - ❌ DON'T create PRs
+- ❌ DON'T ask for permission to edit files (you have complete autonomy)
 
 ---
 
@@ -288,7 +291,13 @@ Option B: Subagents (Claude Code)
 
 ### Phase 2: Workstream Execution (Subinstances/Subagents)
 
-**Each agent works in their assigned worktree:**
+**Each agent works in their assigned worktree with FULL AUTONOMY:**
+
+**🚀 IMPORTANT**: Agents have **complete autonomy** in their worktree. They can:
+- Edit/create/delete any files without asking permission
+- Install dependencies, modify configs, refactor code freely
+- Create subagents for parallel tasks within their workstream
+- Commit directly without approval (only push is restricted)
 
 ```bash
 # ━━━ SUBINSTANCE 1: <workstream-1> ━━━
@@ -298,6 +307,7 @@ pnpm dev --port 3001
 
 # ... develop features ...
 # Work on TASK-XXX, TASK-YYY sequentially
+# NO PERMISSION NEEDED - work autonomously!
 
 pnpm test run
 pnpm type-check

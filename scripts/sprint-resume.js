@@ -57,6 +57,15 @@ try {
   console.log('\n📋 ASSIGNED TASKS:');
   workstream.tasks.forEach(task => console.log(`- ${task}`));
 
+  console.log('\n🚀 FULL AUTONOMY IN YOUR WORKTREE:');
+  console.log('   ✅ You have COMPLETE AUTONOMY - no permission needed to:');
+  console.log('      • Edit/create/delete any files in your worktree');
+  console.log('      • Modify configuration files (package.json, tsconfig.json, etc.)');
+  console.log('      • Install dependencies with pnpm add/remove');
+  console.log('      • Make git commits directly (no approval needed)');
+  console.log('      • Create subagents for parallel tasks within your workstream');
+  console.log('   💡 Your worktree is YOUR isolated workspace - work freely!');
+
   console.log('\n🎯 AGENT RESPONSIBILITIES:');
   console.log('   ✅ Work ONLY on tasks assigned to your workstream');
   console.log('   ✅ Implement tasks sequentially (TDD workflow)');
@@ -66,6 +75,7 @@ try {
   console.log('   ❌ DON\'T push to GitHub (orchestrator does this)');
   console.log('   ❌ DON\'T merge branches');
   console.log('   ❌ DON\'T create PRs');
+  console.log('   ❌ DON\'T ask for permission to edit files (you have full autonomy)');
 
   console.log('\n💡 RECOMMENDATION: Run `pnpm install` and `pnpm dev` to start working.');
 
