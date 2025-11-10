@@ -9,29 +9,23 @@ To enable workstream agents to work autonomously without permission prompts, con
 
 ## Required Settings
 
-### 1. Enable AutoRun
-- **Setting**: `AutoRun` or "Automatically execute terminal commands"
-- **Description**: Automatically executes terminal commands and accepts edits
-- **Action**: Enable this toggle
-- **Use case**: Allows `pnpm sprint:resume` and other commands to run without prompts
+### 1. Configure Auto-Run Mode ⚠️ CRITICAL
+- **Setting**: `Auto-Run Mode` (dropdown)
+- **Location**: `Cursor Settings` → `Agents` → `Auto-Run` section
+- **Current Setting**: "Run Everything (Unsandboxed)"
+- **Description**: Controls how Agent runs tools like command execution, MCP, and file writes
+- **Action**: Set to **"Run Everything (Unsandboxed)"** (this should enable both terminal commands AND file edits)
+- **Use case**: Allows `pnpm sprint:resume` and file edits to run without prompts
+- **Note**: This is the main setting that controls automatic execution
 
-### 2. Enable Auto-Apply Edits ⚠️ CRITICAL
-- **Setting Names** (may vary by Cursor version):
-  - "Automatically apply edits"
-  - "Auto-apply edits"
-  - "Edit and Reapply" (tool setting)
-  - "AutoApplyEdits" (if visible)
-- **Description**: Automatically applies edits without manual confirmation
-- **Action**: **Enable this toggle** (this is separate from AutoRun!)
-- **Location Options**:
-  1. `Cursor Settings` → `Features` → `Agent` → `Tools` (Advanced Options)
-  2. `Cursor Settings` → `Features` → `Agent` → Look for edit-related toggles
-  3. In the Agent chat interface, check for tool settings/gear icon
-- **Use case**: Allows file writes (like `package.json`, source files, etc.) without permission prompts
-- **Note**: If you can't find this setting, it may be:
-  - Named differently in your Cursor version
-  - Part of Guardrails configuration
-  - Not available in your Cursor version (may need update)
+### 2. Protection Settings (Review)
+- **Location**: `Cursor Settings` → `Agents` → `Auto-Run` section
+- **Settings to check**:
+  - **File-Deletion Protection**: ON (prevents auto-deletion - keep ON for safety)
+  - **Dotfile Protection**: ON (prevents modifying .gitignore, etc. - keep ON for safety)
+  - **External-File Protection**: ON (prevents modifying files outside workspace - keep ON for safety)
+  - **Browser Protection**: OFF (allows browser tools - adjust as needed)
+- **Note**: These protection settings should NOT block regular file edits within the workspace when "Run Everything" is enabled
 
 ### 3. Configure Guardrails (Optional but Recommended)
 - **Setting**: `Guardrails` or "Safeguards"
@@ -54,50 +48,53 @@ To enable workstream agents to work autonomously without permission prompts, con
 ## Configuration Summary
 
 ```
-Cursor Settings → Features → Agent → Tools:
+Cursor Settings → Agents → Auto-Run:
 
-✅ AutoRun: ON
-✅ AutoApplyEdits: ON
-✅ Guardrails: Configure allow list for sprint commands
-✅ AutoFixErrors: ON (optional)
+✅ Auto-Run Mode: "Run Everything (Unsandboxed)"
+✅ File-Deletion Protection: ON (safety)
+✅ Dotfile Protection: ON (safety)
+✅ External-File Protection: ON (safety)
+✅ Browser Protection: OFF (or ON if you want to block browser tools)
+
+Cursor Settings → Agents → Applying Changes:
+
+✅ Auto-Fix Lints: ON (optional but recommended)
+✅ Auto-Accept on Commit: ON (optional)
+✅ Jump to Next Diff on Accept: ON (optional)
 ```
 
 ## Troubleshooting
 
 ### File Edits Still Prompting?
 
-If terminal commands work (AutoRun is working) but file edits still ask for permission:
+If "Run Everything (Unsandboxed)" is enabled but file edits still ask for permission:
 
-1. **Find the Auto-Apply Setting**:
-   - Go to `Cursor Settings` → `Features` → `Agent`
-   - Look through all sub-sections: `Tools`, `Advanced Options`, etc.
-   - Search for keywords: "apply", "edit", "auto", "reapply"
-   - Check if there's a tool list where "Edit and Reapply" can be enabled
-   - **Alternative**: Check if it's in Guardrails as an allowed tool
+1. **Verify Auto-Run Mode Setting**:
+   - Go to `Cursor Settings` → `Agents` → `Auto-Run`
+   - Confirm `Auto-Run Mode` is set to **"Run Everything (Unsandboxed)"**
+   - If it's set to "Ask" or "Sandboxed", change it to "Run Everything"
 
-2. **Check Guardrails/Safeguards Configuration**:
-   - If Guardrails are configured, look for "Edit" or "File" tools
-   - Add "Edit and Reapply" or "File Write" to the allowed tools list
-   - Or temporarily disable Guardrails to test if that's the issue
+2. **Check Protection Settings**:
+   - The protection toggles (File-Deletion, Dotfile, External-File) should NOT block regular file edits
+   - However, if you're editing dotfiles (like `.gitignore`), `Dotfile Protection` being ON will block it
+   - If editing files outside workspace, `External-File Protection` will block it
+   - **For worktree files**: These should work fine with "Run Everything" enabled
 
-3. **Check Cursor Version**:
-   - Some features may only be in newer versions
-   - Check for Cursor updates: `Help` → `Check for Updates`
-   - The setting might be in a Beta section
-
-4. **Restart Agent session**:
-   - Close the current Agent chat
+3. **Restart Agent Session**:
+   - Close the current Agent chat completely
    - Start a new Agent session
-   - Settings changes may require a new session
+   - Settings changes require a new session to take effect
 
-5. **Check for file-specific restrictions**:
-   - Some files (like `.env`, config files) might have additional protections
-   - Check if the file is in a protected directory
+4. **Check File Location**:
+   - Make sure you're editing files **within the workspace** (not outside)
+   - Worktree directories should be considered part of the workspace
+   - Files outside the workspace will be blocked by `External-File Protection`
 
-6. **If setting doesn't exist**:
-   - This may be a limitation of your Cursor version
-   - File edits may always require approval for security
-   - Consider this expected behavior and approve when prompted
+5. **If Still Prompting**:
+   - This may be a Cursor bug or limitation
+   - Try restarting Cursor completely
+   - Check for Cursor updates: `Help` → `Check for Updates`
+   - As a workaround, approve file edits when prompted (AutoRun for terminal commands is working)
 
 ## Notes
 
