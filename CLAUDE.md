@@ -38,9 +38,9 @@ Manual steps if needed:
 **No active sprint** - Ready to start a new sprint
 
 **Available Sprint Backlogs**:
-- [Sprint 1: Subscribe Button Implementation](./.claude/backlog/sprint-1-subscribe.md) - Ready to start
+- [Sprint 1: Hello API (Simplified Demo)](./.claude/backlog/sprint-1-hello-api.md) - Fast demo sprint (~45 min, 3 SP)
 
-👉 **To start a sprint**: Run `pnpm sprint:analyze .claude/backlog/sprint-1-subscribe.md` to begin orchestration
+👉 **To start a sprint**: Run `pnpm sprint:analyze .claude/backlog/sprint-1-hello-api.md` to begin orchestration
 
 ---
 

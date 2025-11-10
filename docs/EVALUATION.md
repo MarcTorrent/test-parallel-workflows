@@ -16,20 +16,20 @@ The Sprint Workstreams system has been thoroughly tested and validated. Both com
 
 ### Prerequisites
 - Clean Git repository state
-- Sprint backlog file: `.claude/backlog/sprint-1-subscribe.md`
+- Sprint backlog file: `.claude/backlog/sprint-1-hello-api.md`
 - All sprint scripts available via `pnpm` commands
 - Cleanup script: `pnpm sprint:cleanup-all`
 
 ### Test Data
-- **Sprint**: sprint-1-subscribe
-- **Workstreams**: 3 (ui-components, backend-api, testing)
-- **Tasks**: 5 total (TASK-101 through TASK-105)
-- **Dependencies**: testing depends on ui-components and backend-api
+- **Sprint**: sprint-1-hello-api
+- **Workstreams**: 3 (frontend, backend, testing)
+- **Tasks**: 3 total (TASK-101 through TASK-103)
+- **Dependencies**: testing depends on frontend and backend
 
 ## Orchestrator Command Evaluation (`/orchestrator`)
 
 ### Test 1: Initial State (No Sprint Configuration)
-**Command**: `pnpm sprint:orchestrate .claude/backlog/sprint-1-subscribe.md`
+**Command**: `pnpm sprint:orchestrate .claude/backlog/sprint-1-hello-api.md`
 
 **Expected Behavior**:
 - Detect missing sprint configuration
@@ -42,7 +42,7 @@ The Sprint Workstreams system has been thoroughly tested and validated. Both com
 - Displayed comprehensive orchestrator responsibilities
 
 ### Test 2: After Sprint Analysis
-**Command**: `pnpm sprint:analyze .claude/backlog/sprint-1-subscribe.md`
+**Command**: `pnpm sprint:analyze .claude/backlog/sprint-1-hello-api.md`
 
 **Expected Behavior**:
 - Analyze sprint backlog for workstreams
@@ -51,12 +51,12 @@ The Sprint Workstreams system has been thoroughly tested and validated. Both com
 
 **Result**: ✅ **PASSED**
 - Successfully identified 3 workstreams
-- Correctly detected dependencies (testing depends on ui-components and backend-api)
+- Correctly detected dependencies (testing depends on frontend and backend)
 - Generated proper worktree paths
 - Created `.claude/sprint-config.json`
 
 ### Test 3: Orchestrator After Analysis
-**Command**: `pnpm sprint:orchestrate .claude/backlog/sprint-1-subscribe.md`
+**Command**: `pnpm sprint:orchestrate .claude/backlog/sprint-1-hello-api.md`
 
 **Expected Behavior**:
 - Show sprint configuration
@@ -69,7 +69,7 @@ The Sprint Workstreams system has been thoroughly tested and validated. Both com
 - Provided relevant orchestrator commands
 
 ### Test 4: After Workstream Creation
-**Command**: `pnpm sprint:create-workstreams .claude/backlog/sprint-1-subscribe.md`
+**Command**: `pnpm sprint:create-workstreams .claude/backlog/sprint-1-hello-api.md`
 
 **Expected Behavior**:
 - Create Git worktrees for each workstream
@@ -83,7 +83,7 @@ The Sprint Workstreams system has been thoroughly tested and validated. Both com
 - Provided clear next steps for execution
 
 ### Test 5: Orchestrator After Workstream Creation
-**Command**: `pnpm sprint:orchestrate .claude/backlog/sprint-1-subscribe.md`
+**Command**: `pnpm sprint:orchestrate .claude/backlog/sprint-1-hello-api.md`
 
 **Expected Behavior**:
 - Show workstreams are ready to start
@@ -96,7 +96,7 @@ The Sprint Workstreams system has been thoroughly tested and validated. Both com
 - Provided appropriate orchestration commands
 
 ### Test 6: After Agent Work
-**Command**: `pnpm sprint:orchestrate .claude/backlog/sprint-1-subscribe.md`
+**Command**: `pnpm sprint:orchestrate .claude/backlog/sprint-1-hello-api.md`
 
 **Expected Behavior**:
 - Update workstream status to "in_progress"
@@ -122,8 +122,8 @@ The Sprint Workstreams system has been thoroughly tested and validated. Both com
 - Graceful failure with exit code 1
 - User-friendly error reporting
 
-### Test 2: Valid Workstream (ui-components)
-**Command**: `pnpm sprint:resume ui-components`
+### Test 2: Valid Workstream (frontend)
+**Command**: `pnpm sprint:resume frontend`
 
 **Expected Behavior**:
 - Change to worktree directory
@@ -132,8 +132,8 @@ The Sprint Workstreams system has been thoroughly tested and validated. Both com
 
 **Result**: ✅ **PASSED**
 - Correctly changed to worktree directory
-- Showed proper branch (feature/ui-components-workstream)
-- Displayed assigned tasks (TASK-101, TASK-102)
+- Showed proper branch (feature/frontend-workstream)
+- Displayed assigned tasks (TASK-101)
 - Provided clear agent responsibilities
 
 ### Test 3: Worktree Environment Verification
@@ -152,7 +152,7 @@ The Sprint Workstreams system has been thoroughly tested and validated. Both com
 
 ### Test 4: All Workstreams
 **Commands**: 
-- `pnpm sprint:resume backend-api`
+- `pnpm sprint:resume backend`
 - `pnpm sprint:resume testing`
 
 **Expected Behavior**:
@@ -163,13 +163,13 @@ The Sprint Workstreams system has been thoroughly tested and validated. Both com
 **Result**: ✅ **PASSED**
 - All 3 workstreams work correctly
 - Proper task assignments for each:
-  - ui-components: TASK-101, TASK-102
-  - backend-api: TASK-103, TASK-104
-  - testing: TASK-105
+  - frontend: TASK-101
+  - backend: TASK-102
+  - testing: TASK-103
 - Consistent behavior across all workstreams
 
 ### Test 5: Status Integration
-**Command**: `pnpm sprint:orchestrate .claude/backlog/sprint-1-subscribe.md`
+**Command**: `pnpm sprint:orchestrate .claude/backlog/sprint-1-hello-api.md`
 
 **Expected Behavior**:
 - Orchestrator tracks workstream status changes
