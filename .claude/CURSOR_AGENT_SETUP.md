@@ -15,13 +15,23 @@ To enable workstream agents to work autonomously without permission prompts, con
 - **Action**: Enable this toggle
 - **Use case**: Allows `pnpm sprint:resume` and other commands to run without prompts
 
-### 2. Enable AutoApplyEdits ⚠️ CRITICAL
-- **Setting**: `AutoApplyEdits` or "Automatically apply edits" or "Auto-apply edits"
+### 2. Enable Auto-Apply Edits ⚠️ CRITICAL
+- **Setting Names** (may vary by Cursor version):
+  - "Automatically apply edits"
+  - "Auto-apply edits"
+  - "Edit and Reapply" (tool setting)
+  - "AutoApplyEdits" (if visible)
 - **Description**: Automatically applies edits without manual confirmation
 - **Action**: **Enable this toggle** (this is separate from AutoRun!)
-- **Location**: Same settings page as AutoRun, but it's a different toggle
+- **Location Options**:
+  1. `Cursor Settings` → `Features` → `Agent` → `Tools` (Advanced Options)
+  2. `Cursor Settings` → `Features` → `Agent` → Look for edit-related toggles
+  3. In the Agent chat interface, check for tool settings/gear icon
 - **Use case**: Allows file writes (like `package.json`, source files, etc.) without permission prompts
-- **Note**: If file edits still prompt, double-check this setting is enabled
+- **Note**: If you can't find this setting, it may be:
+  - Named differently in your Cursor version
+  - Part of Guardrails configuration
+  - Not available in your Cursor version (may need update)
 
 ### 3. Configure Guardrails (Optional but Recommended)
 - **Setting**: `Guardrails` or "Safeguards"
@@ -58,23 +68,36 @@ Cursor Settings → Features → Agent → Tools:
 
 If terminal commands work (AutoRun is working) but file edits still ask for permission:
 
-1. **Verify AutoApplyEdits is enabled**:
-   - Go back to Cursor Settings → Features → Agent → Tools
-   - Look for "AutoApplyEdits" or "Automatically apply edits"
-   - Make sure the toggle is **ON** (not just AutoRun)
+1. **Find the Auto-Apply Setting**:
+   - Go to `Cursor Settings` → `Features` → `Agent`
+   - Look through all sub-sections: `Tools`, `Advanced Options`, etc.
+   - Search for keywords: "apply", "edit", "auto", "reapply"
+   - Check if there's a tool list where "Edit and Reapply" can be enabled
+   - **Alternative**: Check if it's in Guardrails as an allowed tool
 
-2. **Check Guardrails configuration**:
-   - If Guardrails are configured, make sure file write operations are allowed
+2. **Check Guardrails/Safeguards Configuration**:
+   - If Guardrails are configured, look for "Edit" or "File" tools
+   - Add "Edit and Reapply" or "File Write" to the allowed tools list
    - Or temporarily disable Guardrails to test if that's the issue
 
-3. **Restart Agent session**:
+3. **Check Cursor Version**:
+   - Some features may only be in newer versions
+   - Check for Cursor updates: `Help` → `Check for Updates`
+   - The setting might be in a Beta section
+
+4. **Restart Agent session**:
    - Close the current Agent chat
    - Start a new Agent session
    - Settings changes may require a new session
 
-4. **Check for file-specific restrictions**:
+5. **Check for file-specific restrictions**:
    - Some files (like `.env`, config files) might have additional protections
    - Check if the file is in a protected directory
+
+6. **If setting doesn't exist**:
+   - This may be a limitation of your Cursor version
+   - File edits may always require approval for security
+   - Consider this expected behavior and approve when prompted
 
 ## Notes
 
