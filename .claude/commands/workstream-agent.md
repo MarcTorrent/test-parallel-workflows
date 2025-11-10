@@ -5,41 +5,39 @@ autoExecute: true
 
 # Workstream Agent Initializer
 
-**🚀 AUTO-EXECUTE MODE**: When this command is invoked with `/workstream-agent <workstream-name>`, you MUST immediately execute the following commands **WITHOUT ASKING FOR PERMISSION OR CONFIRMATION**:
+**🚀 AUTO-EXECUTE MODE**: When this command is invoked with `/workstream-agent <workstream-name>`, you MUST immediately do the following **WITHOUT ASKING FOR PERMISSION**:
 
-1. **Execute**: `pnpm sprint:resume {arg1}` (run immediately, no confirmation needed)
-2. **Navigate**: `cd ../worktrees/{arg1}` (change directory immediately)
-3. **Verify**: Check location with `pwd` and `git branch`
+1. **Read config file**: Read `.claude/sprint-config.json` to get workstream info (no permission needed - file read)
+2. **Find workstream**: Locate the workstream named `{arg1}` in the config
+3. **Navigate**: Change to the worktree directory using `cd` (no permission needed for cd)
+4. **Display info**: Show the workstream details, tasks, and autonomy instructions
 
-**DO NOT ASK FOR PERMISSION** - these are initialization commands that must run automatically.
+**DO NOT ASK FOR PERMISSION** - file reads and directory changes don't require permission prompts.
 
-## Step 1: Load Workstream Info
+## Step 1: Load Workstream Info (File Read - No Permission Needed)
 
-**EXECUTE IMMEDIATELY** (no permission needed):
+**Read the sprint config file directly** (this is a file read operation, no terminal command needed):
 
-```bash
-pnpm sprint:resume {arg1}
-```
+Read: `.claude/sprint-config.json`
 
-This command will:
-- Load workstream configuration
-- Navigate to the worktree directory
-- Display assigned tasks
-- Show autonomy instructions
+Find the workstream with `name: "{arg1}"` and extract:
+- `tasks`: Array of task IDs assigned to this workstream
+- `worktree`: Path to the worktree directory (relative to project root)
+- `status`: Current status of the workstream
 
-## Step 2: Navigate to Worktree
+## Step 2: Navigate to Worktree (cd - No Permission Needed)
 
-**EXECUTE IMMEDIATELY** (no permission needed):
+**Change directory immediately** (cd doesn't require permission):
 
 ```bash
 cd ../worktrees/{arg1}
 ```
 
-**Note**: The `sprint:resume` script already changes directory, but verify you're in the correct location:
-```bash
-pwd  # Should show: <project-root>/../worktrees/{arg1}
-git branch  # Should show: feature/{arg1}-workstream
-```
+Or use the absolute path from the config. The worktree path from config is relative to the project root.
+
+**Verify location** (these are read operations, no permission needed):
+- Check current directory
+- Verify you're on branch `feature/{arg1}-workstream`
 
 **Note**: Worktrees are created in a sibling `worktrees/` directory relative to the project root. The exact path depends on where you cloned the repository.
 
@@ -107,12 +105,16 @@ You are a **WORKSTREAM AGENT** for this Sprint. You are NOT the main orchestrato
 
 ## Getting Started
 
-**After executing the initialization commands above**, you should now:
+**After reading the config and navigating above**, you should now:
+- Have read the workstream info from `.claude/sprint-config.json`
 - Be in the worktree directory (`../worktrees/{arg1}/`)
-- Have seen the assigned tasks from the sprint:resume output
+- Know your assigned tasks from the config
 - Understand your full autonomy in this worktree
 
-**Start implementing the first task** in your workstream task list. Remember: you have complete autonomy - no permission needed for file edits, commits, or running commands.
+**Start implementing the first task** in your workstream task list. Remember: you have complete autonomy - no permission needed for file edits, commits, or running commands in your worktree.
+
+**Optional**: If you want to see the formatted output that `pnpm sprint:resume` would show, you can run it, but it's not required - you already have all the info from the config file.
+
 
 
 
