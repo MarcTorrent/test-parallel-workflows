@@ -18,17 +18,38 @@ const sprintConfig = JSON.parse(fs.readFileSync(sprintConfigPath, 'utf8'));
 
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 console.log('🧹 CLEANING UP SPRINT WORKSTREAMS');
+if (sprintConfig.localCiMode) {
+  console.log('🎭 LOCAL CI MODE: Will reset develop to starting commit');
+}
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
 try {
   // Check if all workstreams are completed
-  const incompleteWorkstreams = sprintConfig.workstreams.filter(ws => ws.status !== 'completed');
+  const incompleteWorkstreams = sprintConfig.workstreams.filter(ws => 
+    ws.status !== 'completed' && ws.status !== 'merged'
+  );
   if (incompleteWorkstreams.length > 0) {
     console.log('⚠️ Warning: Some workstreams are not completed:');
     incompleteWorkstreams.forEach(ws => {
       console.log(`   - ${ws.name}: ${ws.status}`);
     });
     console.log('\nProceeding with cleanup anyway...');
+  }
+
+  // In local CI mode, reset develop to starting commit first
+  if (sprintConfig.localCiMode && sprintConfig.startingCommit) {
+    console.log('\n🔄 Resetting develop to starting commit...');
+    try {
+      // Ensure we're on develop
+      execSync('git checkout develop', { stdio: 'inherit' });
+      
+      // Reset to starting commit (hard reset removes all merge commits)
+      execSync(`git reset --hard ${sprintConfig.startingCommit}`, { stdio: 'inherit' });
+      console.log(`✅ Develop branch reset to starting commit: ${sprintConfig.startingCommit.substring(0, 7)}`);
+    } catch (error) {
+      console.error('⚠️ Failed to reset develop branch:', error.message);
+      console.error('   You may need to manually reset develop to the starting commit.');
+    }
   }
 
   // Remove worktrees
@@ -92,6 +113,7 @@ try {
   console.error('❌ Failed to cleanup sprint:', error.message);
   process.exit(1);
 }
+
 
 
 

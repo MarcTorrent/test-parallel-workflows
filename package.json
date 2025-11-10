@@ -9,6 +9,7 @@
     "lint": "eslint",
     "type-check": "tsc --noEmit",
     "sprint:orchestrate": "node scripts/sprint-orchestrate.js",
+    "sprint:set-mode": "node scripts/sprint-set-mode.js",
     "sprint:analyze": "node scripts/sprint-analyze.js",
     "sprint:create-workstreams": "node scripts/sprint-create-workstreams.js",
     "sprint:resume": "node scripts/sprint-resume.js",
@@ -16,6 +17,7 @@
     "sprint:status": "node scripts/sprint-status.js",
     "sprint:sync-all": "node scripts/sprint-sync-all.js",
     "sprint:push": "node scripts/sprint-push.js",
+    "sprint:merge-local": "node scripts/sprint-merge-local.js",
     "sprint:cleanup": "node scripts/sprint-cleanup.js",
     "sprint:cleanup-all": "node scripts/sprint-cleanup-all.js"
   },

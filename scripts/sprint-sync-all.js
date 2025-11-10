@@ -16,6 +16,9 @@ const DEMO_MODE = true;
 
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 console.log('🔄 SYNCING ALL WORKSTREAMS');
+if (sprintConfig.localCiMode) {
+  console.log('🎭 LOCAL CI MODE: Syncing with local develop');
+}
 if (DEMO_MODE) {
   console.log('🎭 DEMO MODE: Simulating git operations');
 }
@@ -26,7 +29,10 @@ try {
   console.log('\n📥 Updating main develop branch...');
   execSync('git checkout develop', { stdio: 'inherit' });
 
-  if (DEMO_MODE) {
+  if (sprintConfig.localCiMode) {
+    // In local CI mode, just ensure we're on latest local develop
+    console.log('   Local CI mode: using local develop branch');
+  } else if (DEMO_MODE) {
     console.log('🎭 [DEMO] Simulating: git pull origin develop');
     console.log('   Already up to date.');
   } else {
@@ -44,7 +50,11 @@ try {
         // Change to worktree directory
         process.chdir(worktreePath);
 
-        if (DEMO_MODE) {
+        if (sprintConfig.localCiMode) {
+          // In local CI mode, merge from local develop branch
+          // Worktrees share the same .git, so we can reference develop directly
+          execSync('git merge develop -m "chore: sync with local develop"', { stdio: 'inherit' });
+        } else if (DEMO_MODE) {
           console.log('🎭 [DEMO] Simulating: git fetch origin');
           console.log('   From https://github.com/demo/repo');
           console.log('   * branch develop -> FETCH_HEAD');
@@ -81,6 +91,7 @@ try {
   console.error('❌ Failed to sync workstreams:', error.message);
   process.exit(1);
 }
+
 
 
 

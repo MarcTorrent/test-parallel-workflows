@@ -3,8 +3,12 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 const sprintFile = process.argv[2];
+// Check for explicit flag OR if mode is already set in config
+let localCiMode = process.argv.includes('--local-ci');
+
 if (!sprintFile) {
   console.error('Usage: pnpm sprint:create-workstreams <sprint-file>');
+  console.error('Note: Mode is set by /orchestrator command, or use --local-ci flag');
   process.exit(1);
 }
 
@@ -22,8 +26,18 @@ if (!fs.existsSync(sprintConfigPath)) {
 
 const sprintConfig = JSON.parse(fs.readFileSync(sprintConfigPath, 'utf8'));
 
+// If mode is set in config, use it (unless explicitly overridden by flag)
+if (!localCiMode && sprintConfig.localCiMode) {
+  localCiMode = true;
+}
+
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 console.log('🛠️ CREATING WORKSTREAMS');
+if (localCiMode) {
+  console.log('🎭 LOCAL CI MODE: Merges will be done locally');
+} else {
+  console.log('🌐 STANDARD MODE: GitHub PR workflow');
+}
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
 try {
@@ -37,6 +51,16 @@ try {
     } else {
       console.log('⚠️ Skipping git pull (no remote or other issues)');
     }
+  }
+
+  // Track starting commit in local CI mode
+  if (localCiMode) {
+    const startingCommit = execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
+    sprintConfig.localCiMode = true;
+    sprintConfig.startingCommit = startingCommit;
+    console.log(`\n📌 Starting commit tracked: ${startingCommit.substring(0, 7)}`);
+    console.log('   (develop will be reset to this commit on cleanup)');
+    fs.writeFileSync(sprintConfigPath, JSON.stringify(sprintConfig, null, 2));
   }
 
   sprintConfig.workstreams.forEach(ws => {
